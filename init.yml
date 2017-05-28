@@ -1,0 +1,14 @@
+---
+- hosts: all
+  remote_user: root
+  vars_files:
+    - config.yml
+  roles:
+    - init
+    - exim4
+    - role: rvm
+      rvm1_rvm_version: 'stable'
+      rvm1_rvm_check_for_updates: true
+      rvm1_rubies:
+        - 'ruby-2.4.1'
+      tags: rvm
