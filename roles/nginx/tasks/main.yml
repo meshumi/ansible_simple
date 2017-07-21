@@ -34,6 +34,44 @@
       - restart nginx
     tags: nginx
 
+  - name: create ssl directory
+    template:
+      path: "/etc/nginx/ssl/my_site"
+      state: directory
+      owner: deployer
+      group: deployer
+      mode: 0644
+    tags: nginx
+
+  - name: create sites enabled file
+    template:
+      src: my_site
+      dest: /etc/nginx/sites-enabled/my_site
+      owner: root
+      group: root
+      mode: 0655
+    notify:
+      - restart nginx
+    tags: nginx
+
+  - name: create ssl bundle srt
+      template:
+        src: ssl_bundle.crt
+        dest: /etc/nginx/ssl/my_site/ssl_bundle.crt
+        mode: 0644
+      notify:
+        - restart nginx
+      tags: nginx
+
+  - name: create ssl key
+      template:
+        src: my_site_ssl.key
+        dest: /etc/nginx/ssl/my_site/my_site_ssl.key
+        mode: 0644
+      notify:
+        - restart nginx
+      tags: nginx
+
   - name: create host configuration
     template:
       src: "{{ server_type }}-host"
